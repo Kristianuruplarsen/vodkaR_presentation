@@ -294,5 +294,6 @@ Lær ting i samme rækkefølge som de er gennemgået i dette slideshow, og brug 
 <center>
 Slides fra [Social Data Science](http://sebastianbarfort.github.io/sds_summer/syllabus/) </br> </br>
 Obligatorisk [100 siders introduktion](https://cran.r-project.org/doc/manuals/R-intro.pdf) til R </br> </br>
-[Cookbook for R](http://www.cookbook-r.com/)
+[Cookbook for R](http://www.cookbook-r.com/) </br> </br>
+data + kode til [mine slides](https://github.com/Kristianuruplarsen/vodkaR_presentation)
 </center>
