@@ -1,0 +1,298 @@
+---
+title: "Vodka & R"
+author: "politrådet"
+date: "September 27, 2016"
+output: ioslides_presentation
+---
+
+```{r global_options, include= FALSE, fig.align = 'center'}
+knitr::opts_chunk$set(warning = FALSE, message = FALSE, dev = 'png')
+```
+
+```{r lib, echo = FALSE}
+library("ggplot2")
+library("ggmap")
+library("viridis")
+library("httpuv")
+library("caTools")
+library("caret")
+```
+
+#Hvad er R og hvad skal vi lære?
+## R og RStudio
+- [R](https://cran.r-project.org/bin/windows/base/) er et programmeringssprog
+- [RStudio](https://www.rstudio.com/) er et _integrated development enviroment_ ... Det er programmet der håndterer R kode
+- [Rmarkdown](http://rmarkdown.rstudio.com/) er RStudios integrerede markup-pakke
+
+</br>
+
+
+- Det meste funtionalitet er drevet af 3.partsudviklere, deres arbejde findes på [CRAN](https://cran.r-project.org/) og udviklingsplatformen [github](github.com)
+- Går man i stå kan [stackoverflow](http://stackoverflow.com/) altid svaret. 
+
+## RStudio
+
+<center>
+<img src="rstudio.png" alt="Drawing" style="width: 800px;"/>
+</center>
+
+##RStudio kan (næsten) alt 
+
+* Dataindsamling fra nettet
+    + og et hav af dataformater
+* Datamanipulering
+* Statistisk analyse
+    + Både almindelige regressioner, og myriader af mere moderne metoder
+* Visualisering 
+* Publicering 
+    + med LaTeX, slideshows, HTML, Word, Shinyapps m.fl.
+
+
+## Rmarkdown
+* Markdown er en _plain text formatting syntax_ - dvs markdown laver et .txt dokument om til et formatteret dokument. 
+
+* Rmarkdown er markdown + pandoc + R
+    + _pandoc_ er, som navnet antyder, et program der omformatterer fra et dokumentformat til et andet.            Derfor kan Rmarkdown læse bl.a. LaTeX og HTML 
+    + Rmarkdown kan køre R kode
+
+> * Rmarkdown er smart fordi det er 100% reproducerbart - når ens bachelorvejleder spørger hvordan man er nået frem til sine figurer sender man bare råfilen, med en henvisning til det relevante stykke kode. 
+</br>
+
+> * For eksempel er dette slideshow lavet i Rmarkdown.
+
+----
+</br>
+<center>
+<img src="rmarkdown.png" alt="Drawing" style="width: 800px;"/>
+</center>
+
+
+# Lad os lave noget konkret - folketingsvalg i Danmark
+* dataindsamling
+* manipulering
+* Statistiske metoder
+* Visualisering
+
+#Data
+
+## Data - hvorfra?
+Vi henter data fra [DST](statistikbanken.dk) og et kort over Danmark fra [Sebastians](http://sebastianbarfort.github.io/) hjemmelavede (og ubrugelige) pakke _mapDK_
+```{r loaddata}
+load("municipality.rda")
+
+df_raw = read.csv("dkelec.csv", header = FALSE, sep =";")
+df = df_raw
+colnames(df) = c("party", "location", "res_2007","res_2011","res_2015")
+```
+
+```{r overview, echo = FALSE}
+library("knitr")
+unique(df$party)[1:4]
+```
+
+Der er masser af pakker til at loade data, fx `readr` og `rio`. `rvest` er bygget til at scrape data fra nettet.
+
+##Data - manipulationer 
+```{r manip, echo = FALSE}
+df$party = as.character(df$party)
+df$location = as.character(df$location)
+df$location = tolower(df$location)
+df$res_2007 = as.numeric(df$res_2007)
+df$res_2011 = as.numeric(df$res_2011)
+df$res_2015 = as.numeric(df$res_2015)
+
+
+df$location = gsub("æ", "ae", df$location)
+df$location = gsub("ø", "oe", df$location)
+df$location = gsub("å", "aa", df$location)
+df$location = gsub("-", " ", df$location)
+
+
+df$letter = substr(df$party,1,1)
+df$letter = ifelse(df$letter == "G", "total", df$letter)
+
+df$total_07 = df$res_2007[df$letter == "total"]
+df$total_11 = df$res_2011[df$letter == "total"]
+df$total_15 = df$res_2015[df$letter == "total"]
+
+df$pct_07 = df$res_2007 / df$total_07 * 100
+df$pct_11 = df$res_2011 / df$total_11 * 100
+df$pct_15 = df$res_2015 / df$total_15 * 100
+
+df$diff_11_15 = df$res_2015 - df$res_2011
+df$pct_diff_11_15 = df$pct_15 - df$pct_11
+```
+Foregår med R's indbyggede funktioner, og pakkerne `tidyr` og `dplyr` 
+
+* Først lidt fodarbejde
+```{r setchar, eval = FALSE}
+df$party = as.character(df$party)
+```
+* Så korrektioner for sprogforvirring (tak DST)
+```{r lang, eval = FALSE}
+df$location = gsub("æ", "ae", df$location)
+```
+* ...og lidt flere justeringer
+
+
+
+Når datasættet er i orden kan vi lave intressante mål, for eksempel stemmeandele
+```{r realvar, eval = FALSE}
+df$pct_15 = df$res_2015 / df$total_15 * 100
+```
+
+## Målet: tidy data
+* Tidy data er den "_korrekte_" måde at opstille data
+    + Målet er at have variable i kolonner og observationer i rækker
+    
+</br>
+<center>
+<img src="tidy.png" alt="Drawing" style="width: 800px;"/>
+</center>
+ 
+# Visualiseringer
+
+## ggplot2
+ggplot kan visualisere næsten alt, og er bygget omkring et intuitivt system: _grammar of graphics_.
+
+1. Definer `ggplot`'s grundelement, indtil videre er det kun en x- og en y-akse.
+```{r ggexample, eval = FALSE}
+p = ggplot(data = df) 
+```
+
+2. Tilføj variable med _aesthetics_, for eksempel punkter.
+```{r ggex2, eval = FALSE}
+p = p + geom_point(aes(x = xvar, y = yvar, color = zvar), size = 2)
+```
+
+3. Eventuelle visuelle detaljer kommer til sidst 
+```{r ggex3, eval = FALSE}
+p = p + scale_color_viridis()
+      + ggtitle("TITEL")
+```
+
+-----
+
+```{r number, echo = FALSE, fig.width = 6, fig.height = 6, fig.align= 'center'}
+ggplot(data = subset(df, letter == "V"| letter == "A" | letter == "O")) +
+#  geom_polygon(data = municipality, aes(x = long, y = lat, group = group), fill = "grey", color = "black") +
+  geom_map(aes(map_id = location, fill = pct_15), map = municipality) +
+  expand_limits(x = municipality$long, y = municipality$lat) +
+  scale_fill_viridis(option = "plasma", name = "Pct. of votes 2015") +
+  coord_quickmap() +
+  facet_wrap(~ letter, ncol = 2) +
+#  theme_map() +
+  theme(legend.position = c(0.7, 0.3),
+        plot.background = element_rect(fill = "transparent", color = NA),
+        legend.background = element_rect(fill = "transparent", color = NA)
+        ) +
+  labs(x = NULL, y = NULL, title = "Share of valid votes 2015 (Major parties)" )
+```
+
+## Frem- og tilbagegang
+<center>
+```{r plotly, echo = FALSE, fig.align = 'center'}
+library("plotly")
+p = ggplot(data = subset(df,letter != "total" & letter != "Å")) +
+  geom_abline(slope = 1, intercept = 0, color = "red", size = 1.5, alpha = 0.3) +
+  geom_point(aes(x = pct_07, y=pct_15, color = letter, text = paste("city: ", location)), alpha = 1) +
+#  geom_text(data = subset(df[order(df$pct_diff_11_15),], !duplicated(letter) & letter != "total" & letter != "Å"),
+#            aes(x = pct_07, y = pct_15, label = letter), hjust = -0.5 ) +
+#  coord_fixed(ratio = 1) +
+  labs(x = "Percentage of votes 2007", y = "Percentage of votes 2015",
+       title = "Winners and loosers since 2007") +
+  scale_color_brewer(name = "Party") 
+
+ggplotly(p)
+```
+</center>
+
+# Statistik 
+
+## k-NN
+På forrige slide, er det tydeligt at partierne er clustered $\Rightarrow$ Måske kan vi forudsige partiets bogstav ud fra stemmeandelen i 2007 og 2015?
+
+kNN er en af de simpleste kategoriseringsalgoritmer man kan forestille sig: 
+
+* udregn den euklidiske afstand i n dimensioner (Pythagoras): 
+
+$$
+\begin{align*}
+d(x_i, x_j) = \sqrt{ \sum_{k=1}^n (x_{ik} - x_{jk})^2 }
+\end{align*}
+$$
+
+* Opdel datasættet i _test_ og _train_
+
+* Klassificer punkterne i _test_ ud fra deres k nærmeste naboer i _train_ 
+
+## k-NN - resultater
+
+```{r knn, echo = FALSE}
+p = 0.2
+df_nototal_r = subset(df, letter != "total")
+index = sample(2, nrow(df_nototal_r), replace = TRUE, prob = c(p, 1-p))
+
+df_train = df_nototal_r[index == 1, c(10,12)]
+df_test = df_nototal_r[index == 2, c(10,12)]
+
+df_train_withlabels = df_nototal_r[index == 1, c(6,10,12)]
+df_test_withlabels = df_nototal_r[index == 2, c(6,10,12)]
+
+df_trainlabels = df_nototal_r[index == 1,6]
+df_testlabels = df_nototal_r[index == 2,6]
+
+
+df_nototal = cbind(df_nototal_r, index)
+
+
+nbp <- 250;
+predA <- seq(min(df_nototal$pct_07), max(df_nototal$pct_07), length = nbp)
+predC <- seq(min(df_nototal$pct_15), max(df_nototal$pct_15), length = nbp)
+
+Grid <- expand.grid(pct_07 = predA, pct_15 = predC)
+### MODELLING ###
+V = 10
+T = 4
+TrControl = trainControl(method = "repeatedcv", number = V, repeats = T)
+model = train(x = df_train, y = df_trainlabels, method = "knn", trControl = TrControl)
+pred = predict(model, newdata = Grid)
+predictions = cbind(Grid, letter = pred)
+```
+
+```{r knnplot, echo = FALSE, fig.width = 7, fig.height = 5, fig.align= 'center'}
+ggplot(data = df_nototal, aes(x = pct_07, y = pct_15)) +
+  geom_tile(data = predictions, aes(fill = letter), alpha = 0.3) +
+  geom_point(aes(color = letter)) +
+  geom_point(data = df_train_withlabels, aes(x = pct_07, y = pct_15),
+             color = "black", shape = 1, size = 3.2) +
+  scale_fill_viridis(discrete = TRUE) +
+  scale_color_viridis(discrete = TRUE) +
+  theme(legend.text = element_text(size = 10)) +
+  scale_x_continuous(expand = c(0,0)) +
+  scale_y_continuous(expand = c(0,0)) +
+  labs(x = "Percentage of votes 2007", y = "Percentage of votes 2015", title = "k-NN decision regions with k=5")
+```
+
+## Så hvor godt er det? 
+* k-NN rammer rigtigt på 78.5% af _test_ sættet, der er 10 kategorier, så tilfældige gæt svarer til en succesrate på 10% - Men hvad med andre algoritmer? 
+
+* Nogle klassificeringsalgoritmer kan gøre det bedre, andre kan ikke.
+
+* De fleste er mindre intuitive end k-NN 
+    + `caret` har over 230 klassifikations og regressionsmodeller indbygget. 
+    + Hvilken algoritme der virker, afhænger af data - for eksempel er Neural Networks meget bedre til at fange         vores data's stråle-struktur
+
+
+## Hvad har vi lært? 
+
+## Til dem der vil i gang selv
+Lær ting i samme rækkefølge som de er gennemgået i dette slideshow, og brug Sebastians materiale. 
+
+</br>
+
+<center>
+Slides fra [Social Data Science](http://sebastianbarfort.github.io/sds_summer/syllabus/) </br> </br>
+Obligatorisk [100 siders introduktion](https://cran.r-project.org/doc/manuals/R-intro.pdf) til R </br> </br>
+[Cookbook for R](http://www.cookbook-r.com/)
+</center>
