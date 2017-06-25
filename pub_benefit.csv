@@ -1,0 +1,132 @@
+"Offentligt forsørgede (fuldtidsmodtagere) efter køn, ydelsestype,"
+"område og tid"
+
+" "," "," ","2007","2011","2015"
+"I alt"
+" ","I alt uden SU-modtagere"
+" "," ","Hele landet",775625,826691,763740
+" "," ","Region Hovedstaden",211185,219499,201867
+" "," ","Landsdel Byen København",91754,95516,87635
+" "," ","København",74503,77812,71680
+" "," ","Frederiksberg",11032,11196,10012
+" "," ","Dragør",1280,1232,1093
+" "," ","Tårnby",4938,5276,4850
+" "," ","Landsdel Københavns omegn",62177,66547,61776
+" "," ","Albertslund",4257,4444,4024
+" "," ","Ballerup",6434,6669,6164
+" "," ","Brøndby",5408,5733,5526
+" "," ","Gentofte",5348,5578,5174
+" "," ","Gladsaxe",7430,8010,7456
+" "," ","Glostrup",2648,2988,2780
+" "," ","Herlev",3536,3669,3532
+" "," ","Hvidovre",6421,6943,6557
+" "," ","Høje-Taastrup",6746,7173,6504
+" "," ","Ishøj",3325,3733,3473
+" "," ","Lyngby-Taarbæk",4552,4912,4401
+" "," ","Rødovre",4771,5206,4865
+" "," ","Vallensbæk",1300,1490,1321
+" "," ","Landsdel Nordsjælland",49250,49759,45721
+" "," ","Allerød",1927,1913,1818
+" "," ","Egedal",4037,4068,3581
+" "," ","Fredensborg",4620,4669,4223
+" "," ","Frederikssund",5526,5712,5171
+" "," ","Furesø",3679,3706,3596
+" "," ","Gribskov",5217,5141,4691
+" "," ","Halsnæs",4674,4863,4226
+" "," ","Helsingør",8339,8266,7648
+" "," ","Hillerød",5024,5331,5057
+" "," ","Hørsholm",1964,1896,1779
+" "," ","Rudersdal",4243,4194,3930
+" "," ","Landsdel Bornholm",8005,7678,6735
+" "," ","Bornholm",8005,7678,6735
+" "," ","Region Sjælland",120486,126808,115729
+" "," ","Landsdel Østsjælland",27840,28800,26357
+" "," ","Greve",5959,5823,5282
+" "," ","Køge",7541,8238,7406
+" "," ","Lejre",2944,3053,2796
+" "," ","Roskilde",9242,9519,8861
+" "," ","Solrød",2155,2167,2012
+" "," ","Landsdel Vest- og Sydsjælland",92646,98008,89372
+" "," ","Faxe",4840,5354,4720
+" "," ","Guldborgsund",10831,11280,10411
+" "," ","Holbæk",9692,10425,9710
+" "," ","Kalundborg",7893,8559,7932
+" "," ","Lolland",10074,9924,8524
+" "," ","Næstved",12006,13021,12035
+" "," ","Odsherred",6094,6319,5514
+" "," ","Ringsted",4263,4907,4476
+" "," ","Slagelse",12238,12576,11756
+" "," ","Sorø",3995,4396,4020
+" "," ","Stevns",2943,3192,2880
+" "," ","Vordingborg",7777,8055,7396
+" "," ","Region Syddanmark",176865,191570,175819
+" "," ","Landsdel Fyn",76763,81872,74690
+" "," ","Assens",6282,6850,6073
+" "," ","Faaborg-Midtfyn",7972,8448,7561
+" "," ","Kerteminde",3458,3986,3617
+" "," ","Langeland",2658,2632,2309
+" "," ","Middelfart",5501,5798,5060
+" "," ","Nordfyns",4435,4925,4462
+" "," ","Nyborg",5179,5758,5254
+" "," ","Odense",30438,32692,30685
+" "," ","Svendborg",9759,9816,8816
+" "," ","Ærø",1081,968,854
+" "," ","Landsdel Sydjylland",100102,109698,101129
+" "," ","Billund",3463,3649,3467
+" "," ","Esbjerg",17826,18676,16913
+" "," ","Fanø",443,440,381
+" "," ","Fredericia",7667,8375,7581
+" "," ","Haderslev",8193,9079,8583
+" "," ","Kolding",11609,13046,12161
+" "," ","Sønderborg",10825,11989,10859
+" "," ","Tønder",5998,6290,5599
+" "," ","Varde",6148,6952,6735
+" "," ","Vejen",5524,6122,5618
+" "," ","Vejle",13559,15552,14403
+" "," ","Aabenraa",8847,9529,8829
+" "," ","Region Midtjylland",172307,188753,178048
+" "," ","Landsdel Østjylland",115214,124999,118734
+" "," ","Favrskov",5604,6083,5519
+" "," ","Hedensted",5404,6098,5628
+" "," ","Horsens",11696,13399,12974
+" "," ","Norddjurs",6438,6327,5866
+" "," ","Odder",2775,3052,2917
+" "," ","Randers",15234,16541,15185
+" "," ","Samsø",704,663,567
+" "," ","Silkeborg",11446,12372,11698
+" "," ","Skanderborg",6881,7202,6715
+" "," ","Syddjurs",6174,6499,5887
+" "," ","Aarhus",42859,46763,45777
+" "," ","Landsdel Vestjylland",57093,63754,59314
+" "," ","Herning",11326,12636,11876
+" "," ","Holstebro",7642,8363,7779
+" "," ","Ikast-Brande",5497,6180,5718
+" "," ","Lemvig",2967,3001,2690
+" "," ","Ringkøbing-Skjern",7172,8219,7796
+" "," ","Skive",6911,7755,6921
+" "," ","Struer",3248,3620,3178
+" "," ","Viborg",12328,13979,13356
+" "," ","Region Nordjylland",86707,91486,84967
+" "," ","Landsdel Nordjylland",86707,91486,84967
+" "," ","Brønderslev",5366,5741,5362
+" "," ","Frederikshavn",10286,10287,9487
+" "," ","Hjørring",10495,10839,10064
+" "," ","Jammerbugt",6005,6320,5940
+" "," ","Læsø",349,329,277
+" "," ","Mariagerfjord",6385,6848,6349
+" "," ","Morsø",3638,4035,3358
+" "," ","Rebild",3444,3781,3438
+" "," ","Thisted",6806,7542,7050
+" "," ","Vesthimmerlands",5423,5994,5476
+" "," ","Aalborg",28509,29769,28165
+" "," ","Uoplyst kommune",0,0,0
+" "," ","Udlandet",8075,8574,7310
+
+"Fra og med offentliggørelsen af data for 1. kvartal 2014 den 24. juni "
+"2014, er indholdet af OF-statistikken blevet ændret. Ud er gået "
+"personer i servicejob og i forsøg samt voksenlærlinge. Der er ikke "
+"længere nogen personer i servicejob eller forsøg, mens antallet af "
+"voksenlærlinge har været kraftigt undervurderet siden 2009. Ind er "
+"kommet SU-modtagere (fra og med 1/1 2008), jobrotation (1/1 2011), "
+"ressourceforløb (1/1 2013) samt nytteindsats (1/1 2014). "
+
