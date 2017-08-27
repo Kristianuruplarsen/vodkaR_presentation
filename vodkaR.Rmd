@@ -28,7 +28,7 @@ library("caret")
 
 
 - Det meste funtionalitet er drevet af 3.partsudviklere, deres arbejde findes på [CRAN](https://cran.r-project.org/) og udviklingsplatformen [github](github.com)
-- Går man i stå kan [stackoverflow](http://stackoverflow.com/) altid svaret. 
+- Går man i stå kan [stackoverflow](http://stackoverflow.com/) altid svaret.
 
 ## RStudio
 
@@ -36,26 +36,26 @@ library("caret")
 <img src="rstudio.png" alt="Drawing" style="width: 800px;"/>
 </center>
 
-##RStudio kan (næsten) alt 
+##RStudio kan (næsten) alt
 
 * Dataindsamling fra nettet
     + og et hav af dataformater
 * Datamanipulering
 * Statistisk analyse
     + Både almindelige regressioner, og myriader af mere moderne metoder
-* Visualisering 
-* Publicering 
+* Visualisering
+* Publicering
     + med LaTeX, slideshows, HTML, Word, Shinyapps m.fl.
 
 
 ## Rmarkdown
-* Markdown er en _plain text formatting syntax_ - dvs markdown laver et .txt dokument om til et formatteret dokument. 
+* Markdown er en _plain text formatting syntax_ - dvs markdown laver et .txt dokument om til et formatteret dokument.
 
 * Rmarkdown er markdown + pandoc + R
-    + _pandoc_ er, som navnet antyder, et program der omformatterer fra et dokumentformat til et andet.            Derfor kan Rmarkdown læse bl.a. LaTeX og HTML 
+    + _pandoc_ er, som navnet antyder, et program der omformatterer fra et dokumentformat til et andet.            Derfor kan Rmarkdown læse bl.a. LaTeX og HTML
     + Rmarkdown kan køre R kode
 
-> * Rmarkdown er smart fordi det er 100% reproducerbart - når ens bachelorvejleder spørger hvordan man er nået frem til sine figurer sender man bare råfilen, med en henvisning til det relevante stykke kode. 
+> * Rmarkdown er smart fordi det er 100% reproducerbart - når ens bachelorvejleder spørger hvordan man er nået frem til sine figurer sender man bare råfilen, med en henvisning til det relevante stykke kode.
 </br>
 
 > * For eksempel er dette slideshow lavet i Rmarkdown.
@@ -76,7 +76,7 @@ library("caret")
 #Data
 
 ## Data - hvorfra?
-Vi henter data fra [DST](statistikbanken.dk) og et kort over Danmark fra [Sebastians](http://sebastianbarfort.github.io/) hjemmelavede (og ubrugelige) pakke _mapDK_
+Vi henter data fra [DST](statistikbanken.dk) og et kort over Danmark fra [Sebastians](http://sebastianbarfort.github.io/) hjemmelavede pakke _mapDK_
 ```{r loaddata}
 load("municipality.rda")
 
@@ -92,7 +92,7 @@ unique(df$party)[1:4]
 
 Der er masser af pakker til at loade data, fx `readr` og `rio`. `rvest` er bygget til at scrape data fra nettet.
 
-##Data - manipulationer 
+##Data - manipulationer
 ```{r manip, echo = FALSE}
 df$party = as.character(df$party)
 df$location = as.character(df$location)
@@ -122,7 +122,7 @@ df$pct_15 = df$res_2015 / df$total_15 * 100
 df$diff_11_15 = df$res_2015 - df$res_2011
 df$pct_diff_11_15 = df$pct_15 - df$pct_11
 ```
-Foregår med R's indbyggede funktioner, og pakkerne `tidyr` og `dplyr` 
+Foregår med R's indbyggede funktioner, og pakkerne `tidyr` og `dplyr`
 
 * Først lidt fodarbejde
 ```{r setchar, eval = FALSE}
@@ -144,12 +144,12 @@ df$pct_15 = df$res_2015 / df$total_15 * 100
 ## Målet: tidy data
 * Tidy data er den "_korrekte_" måde at opstille data
     + Målet er at have variable i kolonner og observationer i rækker
-    
+
 </br>
 <center>
 <img src="tidy.png" alt="Drawing" style="width: 800px;"/>
 </center>
- 
+
 # Visualiseringer
 
 ## ggplot2
@@ -157,7 +157,7 @@ ggplot kan visualisere næsten alt, og er bygget omkring et intuitivt system: _g
 
 1. Definer `ggplot`'s grundelement, indtil videre er det kun en x- og en y-akse.
 ```{r ggexample, eval = FALSE}
-p = ggplot(data = df) 
+p = ggplot(data = df)
 ```
 
 2. Tilføj variable med _aesthetics_, for eksempel punkter.
@@ -165,7 +165,7 @@ p = ggplot(data = df)
 p = p + geom_point(aes(x = xvar, y = yvar, color = zvar), size = 2)
 ```
 
-3. Eventuelle visuelle detaljer kommer til sidst 
+3. Eventuelle visuelle detaljer kommer til sidst
 ```{r ggex3, eval = FALSE}
 p = p + scale_color_viridis()
       + ggtitle("TITEL")
@@ -201,20 +201,20 @@ p = ggplot(data = subset(df,letter != "total" & letter != "Å")) +
 #  coord_fixed(ratio = 1) +
   labs(x = "Percentage of votes 2007", y = "Percentage of votes 2015",
        title = "Winners and loosers since 2007") +
-  scale_color_brewer(name = "Party") 
+  scale_color_brewer(name = "Party")
 
 ggplotly(p)
 ```
 </center>
 
-# Statistik 
+# Statistik
 
 ## k-NN
 På forrige slide, er det tydeligt at partierne er clustered $\Rightarrow$ Måske kan vi forudsige partiets bogstav ud fra stemmeandelen i 2007 og 2015?
 
-kNN er en af de simpleste kategoriseringsalgoritmer man kan forestille sig: 
+kNN er en af de simpleste kategoriseringsalgoritmer man kan forestille sig:
 
-* udregn den euklidiske afstand i n dimensioner (Pythagoras): 
+* udregn den euklidiske afstand i n dimensioner (Pythagoras):
 
 $$
 \begin{align*}
@@ -224,7 +224,7 @@ $$
 
 * Opdel datasættet i _test_ og _train_
 
-* Klassificer punkterne i _test_ ud fra deres k nærmeste naboer i _train_ 
+* Klassificer punkterne i _test_ ud fra deres k nærmeste naboer i _train_
 
 ## k-NN - resultater
 
@@ -274,20 +274,20 @@ ggplot(data = df_nototal, aes(x = pct_07, y = pct_15)) +
   labs(x = "Percentage of votes 2007", y = "Percentage of votes 2015", title = "k-NN decision regions with k=5")
 ```
 
-## Så hvor godt er det? 
-* k-NN rammer rigtigt på 78.5% af _test_ sættet, der er 10 kategorier, så tilfældige gæt svarer til en succesrate på 10% - Men hvad med andre algoritmer? 
+## Så hvor godt er det?
+* k-NN rammer rigtigt på 78.5% af _test_ sættet, der er 10 kategorier, så tilfældige gæt svarer til en succesrate på 10% - Men hvad med andre algoritmer?
 
 * Nogle klassificeringsalgoritmer kan gøre det bedre, andre kan ikke.
 
-* De fleste er mindre intuitive end k-NN 
-    + `caret` har over 230 klassifikations og regressionsmodeller indbygget. 
+* De fleste er mindre intuitive end k-NN
+    + `caret` har over 230 klassifikations og regressionsmodeller indbygget.
     + Hvilken algoritme der virker, afhænger af data - for eksempel er Neural Networks meget bedre til at fange         vores data's stråle-struktur
 
 
-## Hvad har vi lært? 
+## Hvad har vi lært?
 
 ## Til dem der vil i gang selv
-Lær ting i samme rækkefølge som de er gennemgået i dette slideshow, og brug Sebastians materiale. 
+Lær ting i samme rækkefølge som de er gennemgået i dette slideshow, og brug Sebastians materiale.
 
 </br>
 
